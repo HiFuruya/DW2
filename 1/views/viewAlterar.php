@@ -1,9 +1,11 @@
 <?php
 
-    include_once ("controle.php");
+    include_once '../global.php';
+    include_once '../controllers/PessoaController.php';
+
 
     if( !empty($_POST['form_submit']) ) {
-        alterar();
+        PessoaController::update();
     }
 ?>
 
