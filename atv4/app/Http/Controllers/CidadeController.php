@@ -100,10 +100,10 @@ class CidadeController extends Controller
         $aux = session('cidades');
 
         $indice = array_search($id, array_column($aux, 'id'));
- 
+
         $dados = $aux[$indice];
- 
-        return view('cidades.edit', compact('dados')); 
+
+        return view('cidades.edit', compact('dados'));
     }
 
     /**
