@@ -12,6 +12,20 @@
         <div class="col" >
             <div class="form-floating mb-3">
                 <input 
+                    type="number" 
+                    class="form-control" 
+                    name="crmv" 
+                    placeholder="CRMV"
+                    value="{{$dados['crmv']}}"
+                />
+                <label for="crmv">CRMV do Veterinário</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" >
+            <div class="form-floating mb-3">
+                <input 
                     type="text" 
                     class="form-control" 
                     name="nome" 
@@ -22,20 +36,34 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col" >
             <div class="form-floating mb-3">
                 <input 
-                    type="especialidade" 
+                    type="number" 
                     class="form-control" 
-                    name="especialidade" 
+                    name="especialidade_id" 
                     placeholder="Especialidade"
-                    value="{{$dados['especialidade']}}"
+                    value="{{$dados['especialidade_id']}}"
                 />
-                <label for="especialidade">E-mail do Veterinário</label>
+                <label for="especialidade_id">Especialidade do Veterinário</label>
             </div>
         </div>
-    </div>
+    </div> -->
+    <div class="row">
+            <div class="col" >
+                <div class="form-floating mb-3">
+                    <select name="especialidade" class="form-control">
+                        @foreach($esp as $i)                        
+                            <option value="{{$i->id}}">
+                                {{$i->nome}}
+                            </option>
+                        @endforeach
+                    </select>
+                    <label for="especialidade">Especialidade do Veterinário</label>
+                </div>
+            </div>
+        </div>
     <div class="row">
         <div class="col">
             <a href="{{route('veterinarios.index')}}" class="btn btn-secondary btn-block align-content-center">

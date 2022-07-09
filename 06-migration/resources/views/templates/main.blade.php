@@ -41,7 +41,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{{route('clientes.index')}}" class="dropdown-item">Clientes</a></li>
                                 <li><a href="{{route('veterinarios.index')}}" class="dropdown-item">Veterinários</a></li>
-                                <li><a href="" class="dropdown-item">Pets</a></li>
+                                <li><a href="{{route('especialidades.index')}}" class="dropdown-item">Especialidades</a></li>
                             </ul>
                         </li>
                         <li class="nav-item ps-2 me-3">
@@ -106,7 +106,7 @@
               <h5 class="modal-title text-danger">Operação de Remoção</h5>
               <button type="button" class="btn-close" data-bs-dismiss="removeModal" onclick="closeRemoveModal()" aria-label="Close"></button>
             </div>
-            <input type="hidden" crmv="crmv_remove">
+            <input type="hidden" id="id_remove">
             <div class="modal-body text-secondary">
             </div>
             <div class="modal-footer">
@@ -134,10 +134,14 @@
 
     <script type="text/javascript">
 
-        function showInfoModal() {
-            $('#infoModal').modal().find('.modal-body').html("");
-            for(let a=0; a< arguments.length; a++) {
-                $('#infoModal').modal().find('.modal-body').append("<b>" + arguments[a] + "</b><br>");
+        function showInfoModal(data, fields) {
+
+            data = JSON.parse(data)
+            fields = JSON.parse(fields)
+            
+            $('#infoModal').modal().find('.modal-body').html(""); 
+            for(let a=0; a<fields.length; a++) {
+                $('#infoModal').modal().find('.modal-body').append("<b>" + data[fields[a]] + "</b><br>");
             }
             $("#infoModal").modal('show');
         }
@@ -146,8 +150,8 @@
             $("#infoModal").modal('hide');
         }
 
-        function showRemoveModal(crmv, nome) {
-            $('#id_remove').val(crmv);
+        function showRemoveModal(id, nome) {
+            $('#id_remove').val(id);
             $('#removeModal').modal().find('.modal-body').html("");
             $('#removeModal').modal().find('.modal-body').append("Deseja remover o registro <b class='text-danger'>'"+nome+"'</b> ?");
             $("#removeModal").modal('show');
@@ -158,8 +162,8 @@
         }
 
         function remove() {
-            let crmv = $('#crmv_remove').val();
-            let form = "form_" + $('#crmv_remove').val();
+            let id = $('#id_remove').val();
+            let form = "form_" + $('#id_remove').val();
             document.getElementById(form).submit();
             $("#removeModal").modal('hide')
         }
