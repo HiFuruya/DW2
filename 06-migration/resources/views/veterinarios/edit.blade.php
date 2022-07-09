@@ -5,7 +5,7 @@
 <!-- Preenche o conteúdo da seção "conteudo" -->
 @section('conteudo')
 
-<form action="{{ route('veterinarios.update', $dados['crmv']) }}" method="POST">
+<form action="{{ route('veterinarios.update', $dados->id) }}" method="POST">
     @csrf
     @method('PUT')
     <div class="row">
@@ -13,11 +13,16 @@
             <div class="form-floating mb-3">
                 <input 
                     type="number" 
-                    class="form-control" 
+                    class="form-control {{ $errors->has('crmv') ? 'is-invalid' : '' }}" 
                     name="crmv" 
                     placeholder="CRMV"
                     value="{{$dados['crmv']}}"
                 />
+                @if($errors->has('crmv'))
+                        <div class='invalid-feedback'>
+                            {{ $errors->first('crmv') }}
+                        </div>
+                @endif
                 <label for="crmv">CRMV do Veterinário</label>
             </div>
         </div>
@@ -27,39 +32,35 @@
             <div class="form-floating mb-3">
                 <input 
                     type="text" 
-                    class="form-control" 
+                    class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}" 
                     name="nome" 
                     placeholder="Nome"
                     value="{{$dados['nome']}}"
                 />
+                @if($errors->has('nome'))
+                        <div class='invalid-feedback'>
+                            {{ $errors->first('nome') }}
+                        </div>
+                @endif
                 <label for="nome">Nome do Veterinário</label>
             </div>
         </div>
     </div>
-    <!-- <div class="row">
-        <div class="col" >
-            <div class="form-floating mb-3">
-                <input 
-                    type="number" 
-                    class="form-control" 
-                    name="especialidade_id" 
-                    placeholder="Especialidade"
-                    value="{{$dados['especialidade_id']}}"
-                />
-                <label for="especialidade_id">Especialidade do Veterinário</label>
-            </div>
-        </div>
-    </div> -->
     <div class="row">
             <div class="col" >
                 <div class="form-floating mb-3">
-                    <select name="especialidade" class="form-control">
+                    <select name="especialidade_id" class="form-control {{ $errors->has('especialidade_id') ? 'is-invalid' : '' }}">
                         @foreach($esp as $i)                        
                             <option value="{{$i->id}}">
                                 {{$i->nome}}
                             </option>
                         @endforeach
                     </select>
+                    @if($errors->has('especialidade_id'))
+                        <div class='invalid-feedback'>
+                            {{ $errors->first('especialidade_id') }}
+                        </div>
+                    @endif
                     <label for="especialidade">Especialidade do Veterinário</label>
                 </div>
             </div>

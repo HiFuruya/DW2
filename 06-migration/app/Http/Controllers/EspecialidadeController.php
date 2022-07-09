@@ -18,6 +18,19 @@ class EspecialidadeController extends Controller
     }
 
    public function store(Request $request) {
+
+        $regras = [
+            'nome' => 'required|max:100|min:10',
+            'descricao' => 'required|max:250|min:20'
+        ];
+
+        $msgs = [
+            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
+            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
+            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!"
+        ];
+
+        $request->validate($regras, $msgs);
         
         Especialidade::create([
             'nome' => $request->nome,
@@ -41,6 +54,19 @@ class EspecialidadeController extends Controller
         $obj = Especialidade::find($id);
 
         if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
+
+        $regras = [
+            'nome' => 'required|max:100|min:10',
+            'descricao' => 'required|max:250|min:20'
+        ];
+
+        $msgs = [
+            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
+            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
+            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!"
+        ];
+
+        $request->validate($regras, $msgs);
 
         $obj->fill([
             'nome' => $request->nome,

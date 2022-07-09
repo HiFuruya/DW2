@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class VeterinariosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     public function index()
     {
@@ -29,10 +24,27 @@ class VeterinariosController extends Controller
 
     public function store(Request $request)
     {
+        $regras = [
+            'crmv' => 'required|max:10|min:5|unique:veterinarios',
+            'nome' => 'required|max:100|min:10',
+            'especialidade_id' => 'required'
+        ];
+
+        $msgs = [
+            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
+            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
+            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!",
+            "unique" => "Já existe um Veterinário cadastrado com esse [:attribute]!"
+        ];
+
+        echo $request->especialidade_id;
+
+        $request->validate($regras, $msgs);
+
         Veterinario::create([
             'crmv' => $request->crmv,
             'nome' => $request->nome,
-            'especialidade_id' => $request->especialidade,
+            'especialidade_id' => $request->especialidade_id,
         ]);
         
         return redirect()->route('veterinarios.index');
@@ -45,6 +57,10 @@ class VeterinariosController extends Controller
 
         if(!isset($dados)) { return "<h1>ID: $id não encontrado!</h1>"; }
 
+        // dd($dados);
+
+        echo($dados->id);
+
         return view('veterinarios.edit', compact(['dados','esp']));
     }
 
@@ -53,6 +69,29 @@ class VeterinariosController extends Controller
         $obj = Veterinario::find($id);
 
         if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
+
+        if ($request->crmv == $obj->crmv) {
+            $regras = [
+                'crmv' => 'required|max:10|min:5',
+                'nome' => 'required|max:100|min:10',
+                'especialidade_id' => 'required'
+            ];
+        }else{
+            $regras = [
+                'crmv' => 'required|max:10|min:5|unique:veterinarios',
+                'nome' => 'required|max:100|min:10',
+                'especialidade_id' => 'required'
+            ];
+        }
+
+        $msgs = [
+            "required" => "O preenchimento do campo Especialidade é obrigatório!",
+            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
+            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!",
+            "unique" => "Já existe um Veterinário cadastrado com esse [:attribute]!"
+        ];
+
+        $request->validate($regras, $msgs);
 
         $obj->fill([
             'crmv' => $request->crmv,

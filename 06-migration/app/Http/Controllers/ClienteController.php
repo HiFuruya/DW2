@@ -18,9 +18,23 @@ class ClienteController extends Controller {
     }
 
    public function store(Request $request) {
+
+        $regras = [
+            'nome' => 'required|max:100|min:10',
+            'email' => 'required|max:150|min:15|unique:clientes'
+        ];
+
+        $msgs = [
+            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
+            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
+            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!",
+            "unique" => "Já existe um Cliente cadastrado com esse [:attribute]!"
+        ];
+
+        $request->validate($regras, $msgs);
         
         Cliente::create([
-            'nome' => $request->nome,
+            'nome' => mb_strtoupper($request->nome, 'UTF-8'),
             'email' => $request->email,
         ]);
         
@@ -42,8 +56,28 @@ class ClienteController extends Controller {
 
         if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
 
+        if (trim($request->email) == trim($obj->email)) {
+            $regras = [
+                'nome' => 'required|max:100|min:10'
+            ];
+        }else{
+            $regras = [
+                'nome' => 'required|max:100|min:10',
+                'email' => 'required|max:150|min:15|unique:clientes'
+            ];
+        }
+
+        $msgs = [
+            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
+            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
+            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!",
+            "unique" => "Já existe um Cliente cadastrado com esse [:attribute]!"
+        ];
+
+        $request->validate($regras, $msgs);
+
         $obj->fill([
-            'nome' => $request->nome,
+            'nome' => mb_strtoupper($request->nome, 'UTF-8'),
             'email' => $request->email,
         ]);
 
