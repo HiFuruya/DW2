@@ -1,4 +1,4 @@
-@extends('templates.main', ['titulo' => "Docência (2022)", 'rota' => "vinculos.index"])
+@extends('templates.main', ['titulo' => "Docência (2022)"])
 
 @section('titulo') Docência (2022) @endsection
 
@@ -36,9 +36,11 @@
                                     @foreach ($professores as $item)
                                         <!-- LISTA APENAS OS PROFESSORES ATIVOS -->
                                         @if($item->ativo == 1)
-                                            <option value="{{$item->id}}" @if($item->id == old('professores')) selected="true" @endif>
+                                            @foreach($vinculos as $vinculo)
+                                            <option value="{{$item->id}}" @if($item->id == $vinculo->professor_id && $disciplina->id == $vinculo->disciplina_id) selected @endif>
                                                 {{ $item->nome }}
                                             </option>
+                                            @endforeach
                                         @endif
                                     @endforeach
                                 </select>
@@ -62,7 +64,7 @@
                 </a>
             </div>
             <div class="col-lg-8 col-md-12">
-                <button class="btn btn-success btn-block text-white mb-2 w-100" type="submit" id="bt_salvar">
+                <button class="btn btn-success btn-block text-white mb-2 w-100" type="submit">
                     <b>Confirmar</b>&nbsp;
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
