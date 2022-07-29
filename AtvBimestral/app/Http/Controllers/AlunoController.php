@@ -11,9 +11,8 @@ class AlunoController extends Controller
 
     public function index()
     {
-        $dados = Aluno::all();
-        $cursos = Curso::all();
-        return view('alunos.index', compact('dados', 'cursos'));
+        $dados = Aluno::with(['curso'])->get();
+        return view('alunos.index', compact('dados'));
     }
 
     public function create()

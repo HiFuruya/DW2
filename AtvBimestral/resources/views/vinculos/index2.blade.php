@@ -13,8 +13,6 @@
                 :header="['DISCIPLINA', 'PROFESSOR', 'AÇÕES']"
                 :fields="['disciplina_id', 'professor_id']"
                 :data="$vinculos"
-                :professores="$professores"
-                :disciplinas="$disciplinas"
                 :hide="[true, false, true, false]" 
             />
         </div>

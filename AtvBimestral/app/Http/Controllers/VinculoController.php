@@ -12,11 +12,11 @@ class VinculoController extends Controller
 
     public function index()
     {
-        $disciplinas = Disciplina::all();
-        $professores = Professores::all();
-        $vinculos = Vinculo::all();
+        $vinculos = Vinculo::with(['disciplina'])
+                            ->with(['professor'])
+                            ->get();
 
-        return view("vinculos.index2", compact('disciplinas', 'professores', 'vinculos'));
+        return view("vinculos.index2", compact('vinculos'));
     }
 
     public function store(Request $request){

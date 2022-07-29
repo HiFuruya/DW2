@@ -11,9 +11,8 @@ class CursoController extends Controller
 
     public function index()
     {
-        $dados = Curso::all();
-        $eixos = Eixo::all();
-        return view('cursos.index', compact('dados', 'eixos'));
+        $dados = Curso::with(['eixo'])->get();
+        return view('cursos.index', compact('dados'));
     }
 
     public function create()
@@ -52,27 +51,8 @@ class CursoController extends Controller
         $curso->eixo()->associate($obj_eixo);
 
         $curso->save();
-
-        // Curso::create([
-        //     'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-        //     'sigla' => mb_strtoupper($request->sigla, 'UTF-8'),
-        //     'tempo' => $request->tempo,
-        //     'eixo_id' => $request->eixo_id,
-        // ]);
         
         return redirect()->route('cursos.index');
-    }
-
-    public function show($id)
-    {
-        $dados = Curso::find($id);
-    
-        if(!isset($dados)) { return "<h1>ID: $id não encontrado!"; }
-
-        $eixo = Eixo::all();
-
-        return view('cursos.show', compact('dados', 'eixo'));
-
     }
 
     public function edit($id)
@@ -112,15 +92,6 @@ class CursoController extends Controller
         $obj->tempo = $request->tempo;
 
         $obj->eixo()->associate($obj_eixo);
-
-        $obj->save();
-
-        // $obj->fill([
-        //     'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-        //     'sigla' => mb_strtoupper($request->sigla, 'UTF-8'),
-        //     'tempo' => $request->tempo,
-        //     'eixo_id' => $request->eixo_id,
-        // ]);
 
         $obj->save();
 

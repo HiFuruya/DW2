@@ -13,7 +13,6 @@
                 :header="['NOME', 'EIXO', 'STATUS', 'AÇÕES']" 
                 :fields="['nome', 'eixo_id', 'ativo']"
                 :data="$dados"
-                :eixos="$eixos"
                 :hide="[true, false, true, false]" 
                 :info="['nome', 'eixo', 'status']"
                 :remove="'nome'"

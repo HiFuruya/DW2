@@ -13,7 +13,6 @@
                 :header="['NOME', 'CURSO', 'AÇÕES']" 
                 :fields="['nome', 'curso_id']"
                 :data="$dados"
-                :cursos="$cursos"
                 :hide="[true, false, true, false]" 
                 :info="['nome', 'curso']"
                 :remove="'nome'"

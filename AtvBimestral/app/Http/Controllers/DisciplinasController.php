@@ -11,9 +11,8 @@ class DisciplinasController extends Controller
 
     public function index()
     {
-        $dados = Disciplina::all();
-        $cursos = Curso::all();
-        return view('disciplinas.index', compact('dados', 'cursos'));
+        $dados = Disciplina::with(['curso'])->get();
+        return view('disciplinas.index', compact('dados'));
     }
 
     public function create()
@@ -50,12 +49,6 @@ class DisciplinasController extends Controller
 
         $disciplina->save();
 
-        // Disciplina::create([
-        //     'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-        //     'carga' => $request->carga,
-        //     'curso_id' => $request->curso_id,
-        // ]);
-        
         return redirect()->route('disciplinas.index');
     }
 
@@ -100,12 +93,6 @@ class DisciplinasController extends Controller
         $obj->carga = $request->carga;
 
         $obj->curso()->associate($obj_curso);
-
-        // $obj->fill([
-        //     'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-        //     'carga' => $request->carga,
-        //     'curso_id' => $request->curso_id,
-        // ]);
 
         $obj->save();
 

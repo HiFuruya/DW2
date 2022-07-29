@@ -24,25 +24,9 @@
 
                     @foreach($fields as $field)
                         @if(trim($field) == trim('disciplina_id'))
-                            @foreach($disciplinas as $disciplina)
-                                @if($disciplina->id == $item->disciplina_id)
-                                    @if($hide[$cont])
-                                        <td class="d-none d-md-table-cell">{{ $disciplina->nome }}</td>
-                                    @else
-                                        <td>{{ $disciplina->nome }}</td>
-                                    @endif
-                                @endif
-                            @endforeach
+                            <td class="d-none d-md-table-cell">{{ $item->disciplina->nome }}</td>
                         @else   
-                            @foreach($professores as $professor)
-                                @if($professor->id == $item->professor_id)
-                                    @if($hide[$cont])
-                                        <td class="d-none d-md-table-cell">{{ $professor->nome }}</td>
-                                    @else
-                                        <td>{{ $professor->nome }}</td>
-                                    @endif
-                                @endif
-                            @endforeach
+                            <td class="d-none d-md-table-cell">{{ $item->professor->nome }}</td>
                         @endif
 
                         @php $cont=0; @endphp

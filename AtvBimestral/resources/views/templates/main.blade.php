@@ -136,13 +136,10 @@
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
 
     <script type="text/javascript">
-        function showInfoModal(data, fields) {
-            data = JSON.parse(data)
-            fields = JSON.parse(fields)
-            
-            $('#infoModal').modal().find('.modal-body').html(""); 
-            for(let a=0; a<fields.length; a++) {
-                $('#infoModal').modal().find('.modal-body').append("<b>" + data[fields[a]] + "</b><br>");
+        function showInfoModal(data) {
+            $('#infoModal').modal().find('.modal-body').html("");
+            for (let a = 0; a < data.length; a++) {
+                $('#infoModal').modal().find('.modal-body').append("<b>" + data[a] + "</b></br>");
             }
             $("#infoModal").modal('show');
         }

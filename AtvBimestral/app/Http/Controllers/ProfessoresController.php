@@ -11,9 +11,8 @@ class ProfessoresController extends Controller
 
     public function index()
     {
-        $dados = Professores::all();
-        $eixos = Eixo::all();
-        return view('professores.index', compact('dados', 'eixos'));
+        $dados = Professores::with(['eixo'])->get();
+        return view('professores.index', compact('dados'));
     }
 
     public function create()
@@ -56,14 +55,6 @@ class ProfessoresController extends Controller
         $professor->eixo()->associate($obj_eixo);
 
         $professor->save();
-        
-        // Professores::create([
-        //     'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-        //     'email' => $request->email,
-        //     'siape' => $request->siape,
-        //     'eixo_id' => $request->eixo_id,
-        //     'ativo' => $request->ativo
-        // ]);
         
         return redirect()->route('professores.index');
     }
@@ -166,14 +157,6 @@ class ProfessoresController extends Controller
         $obj->ativo = $request->ativo;
 
         $obj->eixo()->associate($obj_eixo);
-
-        // $obj->fill([
-        //     'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-        //     'email' => $request->email,
-        //     'siape' => $request->siape,
-        //     'eixo_id' => $request->eixo_id,
-        //     'ativo' => $request->ativo
-        // ]);
 
         $obj->save();
 
