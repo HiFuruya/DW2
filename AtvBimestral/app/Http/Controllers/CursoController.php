@@ -39,12 +39,26 @@ class CursoController extends Controller
 
         $request->validate($regras, $msgs);
 
-        Curso::create([
-            'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-            'sigla' => mb_strtoupper($request->sigla, 'UTF-8'),
-            'tempo' => $request->tempo,
-            'eixo_id' => $request->eixo_id,
-        ]);
+        $obj_eixo = Eixo::find($request->eixo_id);
+
+        $curso = new Curso;
+
+        $curso->nome =  mb_strtoupper($request->nome, 'UTF-8');
+
+        $curso->sigla = mb_strtoupper($request->sigla, 'UTF-8');
+
+        $curso->tempo = $request->tempo;
+
+        $curso->eixo()->associate($obj_eixo);
+
+        $curso->save();
+
+        // Curso::create([
+        //     'nome' => mb_strtoupper($request->nome, 'UTF-8'),
+        //     'sigla' => mb_strtoupper($request->sigla, 'UTF-8'),
+        //     'tempo' => $request->tempo,
+        //     'eixo_id' => $request->eixo_id,
+        // ]);
         
         return redirect()->route('cursos.index');
     }
@@ -89,12 +103,24 @@ class CursoController extends Controller
 
         $request->validate($regras, $msgs);
 
-        $obj->fill([
-            'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-            'sigla' => mb_strtoupper($request->sigla, 'UTF-8'),
-            'tempo' => $request->tempo,
-            'eixo_id' => $request->eixo_id,
-        ]);
+        $obj_eixo = Eixo::find($request->eixo_id);
+
+        $obj->nome =  mb_strtoupper($request->nome, 'UTF-8');
+
+        $obj->sigla = mb_strtoupper($request->sigla, 'UTF-8');
+
+        $obj->tempo = $request->tempo;
+
+        $obj->eixo()->associate($obj_eixo);
+
+        $obj->save();
+
+        // $obj->fill([
+        //     'nome' => mb_strtoupper($request->nome, 'UTF-8'),
+        //     'sigla' => mb_strtoupper($request->sigla, 'UTF-8'),
+        //     'tempo' => $request->tempo,
+        //     'eixo_id' => $request->eixo_id,
+        // ]);
 
         $obj->save();
 

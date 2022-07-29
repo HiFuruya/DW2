@@ -8,7 +8,7 @@
     <div class="col">
         <table class="table align-middle caption-top table-striped" id="tabela">
             <tbody>
-                <form action="{{ route('vinculos.update') }}" method="POST">
+                <form action="{{ route('vinculos.update', $disciplina->id)}}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="row">
@@ -21,11 +21,6 @@
                                                 {{$disciplina->nome}}
                                             </option>
                                 </select>
-                                @if($errors->has('disciplina_id'))
-                                    <div class='invalid-feedback'>
-                                        {{ $errors->first('disciplina_id') }}
-                                    </div>
-                                @endif
                                 <label for="disciplina_id">Disciplina</label>
                             </div>
                         </div>

@@ -12,4 +12,12 @@ class Vinculo extends Model {
     use SoftDeletes;
 
     protected $fillable = ['professor_id', 'disciplina_id'];
+
+    public function disciplina() {
+        return $this->belongsTo('App\Models\Disciplina');
+    }
+
+    public function professor() {
+        return $this->belongsTo('App\Models\Professores');
+    }
 }

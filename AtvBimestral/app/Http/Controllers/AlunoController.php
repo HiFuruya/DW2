@@ -2,31 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aluno;
 use App\Models\Curso;
-use App\Models\Disciplina;
 use Illuminate\Http\Request;
 
-class DisciplinasController extends Controller
+class AlunoController extends Controller
 {
 
     public function index()
     {
-        $dados = Disciplina::all();
+        $dados = Aluno::all();
         $cursos = Curso::all();
-        return view('disciplinas.index', compact('dados', 'cursos'));
+        return view('alunos.index', compact('dados', 'cursos'));
     }
 
     public function create()
     {
         $cursos = Curso::all();
-        return view('disciplinas.create', compact('cursos'));
+        return view('alunos.create', compact('cursos'));
     }
 
     public function store(Request $request)
     {
         $regras = [
             'nome' => 'required|max:100|min:10',
-            'carga' => 'required|max:12|min:1',
             'curso_id' => 'required'
         ];
 
@@ -40,48 +39,39 @@ class DisciplinasController extends Controller
 
         $obj_curso = Curso::find($request->curso_id);
 
-        $disciplina = new Disciplina;
+        $aluno = new Aluno;
 
-        $disciplina->nome =  mb_strtoupper($request->nome, 'UTF-8');
+        $aluno->nome =  mb_strtoupper($request->nome, 'UTF-8');
 
-        $disciplina->carga = $request->carga;
+        $aluno->curso()->associate($obj_curso);
 
-        $disciplina->curso()->associate($obj_curso);
+        $aluno->save();
 
-        $disciplina->save();
-
-        // Disciplina::create([
-        //     'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-        //     'carga' => $request->carga,
-        //     'curso_id' => $request->curso_id,
-        // ]);
-        
-        return redirect()->route('disciplinas.index');
+        return redirect()->route('alunos.index');
     }
 
     public function show($id)
     {
-        $dados = Disciplina::find($id);
-        $cursos = Curso::all();
-        return view('disciplinas.show', compact('dados', 'cursos'));
+        $dados = Aluno::with(['curso'])->find($id);
+
+        echo $dados->getAttribute('nome');
     }
 
     public function edit($id)
     {
-        $dados = Disciplina::find($id);
+        $dados = Aluno::find($id);
         $cursos = Curso::all();
-        return view('disciplinas.edit', compact('dados', 'cursos'));
+        return view('alunos.edit', compact('dados', 'cursos'));
     }
 
     public function update(Request $request, $id)
     {
-        $obj = Disciplina::find($id);
+        $obj = Aluno::find($id);
 
         if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
 
         $regras = [
             'nome' => 'required|max:100|min:10',
-            'carga' => 'required|max:12|min:1',
             'curso_id' => 'required'
         ];
 
@@ -97,29 +87,21 @@ class DisciplinasController extends Controller
 
         $obj->nome =  mb_strtoupper($request->nome, 'UTF-8');
 
-        $obj->carga = $request->carga;
-
         $obj->curso()->associate($obj_curso);
-
-        // $obj->fill([
-        //     'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-        //     'carga' => $request->carga,
-        //     'curso_id' => $request->curso_id,
-        // ]);
 
         $obj->save();
 
-        return redirect()->route('disciplinas.index');
+        return redirect()->route('alunos.index');
     }
 
     public function destroy($id)
     {
-        $obj = Disciplina::find($id);
+        $obj = Aluno::find($id);
 
         if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
 
         $obj->destroy($id);
 
-        return redirect()->route('disciplinas.index');
+        return redirect()->route('alunos.index');
     }
 }

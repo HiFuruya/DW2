@@ -40,14 +40,30 @@ class ProfessoresController extends Controller
         ];
 
         $request->validate($regras, $msgs);
+
+        $obj_eixo = Eixo::find($request->eixo_id);
+
+        $professor = new Professores;
+
+        $professor->nome =  mb_strtoupper($request->nome, 'UTF-8');
+
+        $professor->email = $request->email;
+
+        $professor->siape = $request->siape;
+
+        $professor->ativo = $request->ativo;
+
+        $professor->eixo()->associate($obj_eixo);
+
+        $professor->save();
         
-        Professores::create([
-            'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-            'email' => $request->email,
-            'siape' => $request->siape,
-            'eixo_id' => $request->eixo_id,
-            'ativo' => $request->ativo
-        ]);
+        // Professores::create([
+        //     'nome' => mb_strtoupper($request->nome, 'UTF-8'),
+        //     'email' => $request->email,
+        //     'siape' => $request->siape,
+        //     'eixo_id' => $request->eixo_id,
+        //     'ativo' => $request->ativo
+        // ]);
         
         return redirect()->route('professores.index');
     }
@@ -139,13 +155,25 @@ class ProfessoresController extends Controller
 
         $request->validate($regras, $msgs);
 
-        $obj->fill([
-            'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-            'email' => $request->email,
-            'siape' => $request->siape,
-            'eixo_id' => $request->eixo_id,
-            'ativo' => $request->ativo
-        ]);
+        $obj_eixo = Eixo::find($request->eixo_id);
+
+        $obj->nome =  mb_strtoupper($request->nome, 'UTF-8');
+
+        $obj->email = $request->email;
+
+        $obj->siape = $request->siape;
+
+        $obj->ativo = $request->ativo;
+
+        $obj->eixo()->associate($obj_eixo);
+
+        // $obj->fill([
+        //     'nome' => mb_strtoupper($request->nome, 'UTF-8'),
+        //     'email' => $request->email,
+        //     'siape' => $request->siape,
+        //     'eixo_id' => $request->eixo_id,
+        //     'ativo' => $request->ativo
+        // ]);
 
         $obj->save();
 

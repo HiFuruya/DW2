@@ -19,32 +19,6 @@ class VinculoController extends Controller
         return view("vinculos.index2", compact('disciplinas', 'professores', 'vinculos'));
     }
 
-    // public function store(Request $request)
-    // {
-    //     $regras = [
-    //         'PROFESSOR_ID_SELECTED' => 'required',
-    //         'DISCIPLINA' => 'required',
-    //     ];
-    //     $msgs = [
-    //         "required" => "O preenchimento do campo [:attribute] é obrigatório!",
-    //     ];
-
-    //     $request->validate($regras, $msgs);
-
-    //     $ids_prof = $request->PROFESSOR_ID_SELECTED;
-    //     $disciplina = $request->DISCIPLINA;
-
-
-    //     for ($i = 0; $i < count($request->DISCIPLINA); $i++) {
-    //         $doc = new Vinculo();
-    //         $doc->professor_id = $ids_prof[$i];
-    //         $doc->disciplina_id = $disciplina[$i];
-    //         $doc->save();
-    //     }
-
-    //     return redirect()->route('index');
-    // }
-
     public function store(Request $request){
         $regras = [
             'professor_id' => 'required',
@@ -56,10 +30,17 @@ class VinculoController extends Controller
 
         $request->validate($regras, $msgs);
 
-        Vinculo::create([
-            'disciplina_id' => $request->disciplina_id,
-            'professor_id' => $request->professor_id
-        ]);
+        $professor = Professores::find($request->professor_id);
+
+        $disciplina = Disciplina::find($request->disciplina_id);
+
+        $vinculo = new Vinculo;
+
+        $vinculo->professor()->associate($professor);
+
+        $vinculo->disciplina()->associate($disciplina);
+
+        $vinculo->save();
 
         return redirect()->route('vinculos.index');
     }
@@ -82,11 +63,12 @@ class VinculoController extends Controller
         return view('vinculos.edit', compact('dados','professores', 'disciplina')); 
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
+        $obj = Vinculo::where('disciplina_id', $id)->first();
+
         $regras = [
             'professor_id' => 'required',
-            'disciplina_id' => 'required',
         ];
         $msgs = [
             "required" => "O preenchimento do campo [:attribute] é obrigatório!",
@@ -94,10 +76,7 @@ class VinculoController extends Controller
 
         $request->validate($regras, $msgs);
 
-        $request->fill([
-            'disciplina_id' => $request->disciplina_id,
-            'professor_id' => $request->professor_id
-        ]);
+        $obj->where('disciplina_id', $id)->update(['professor_id'=> $request->professor_id]);
 
         return redirect()->route('vinculos.index');
     }

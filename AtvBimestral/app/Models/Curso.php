@@ -12,4 +12,16 @@ class Curso extends Model {
     use SoftDeletes;
 
     protected $fillable = ['nome', 'sigla', 'tempo', 'eixo_id'];
+
+    public function eixo(){
+        return $this->belongsTo('App\Models\Eixo');
+    }
+
+    public function disciplina(){
+        return $this->hasMany('App\Models\Disciplina');
+    }
+
+    public function aluno(){
+        return $this->hasMany('App\Models\Aluno');
+    }
 }

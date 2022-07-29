@@ -22,3 +22,4 @@ Route::resource('disciplinas', 'DisciplinasController');
 Route::resource('professores', 'ProfessoresController');
 Route::resource('eixos', 'EixoController');
 Route::resource('vinculos', 'VinculoController');
+Route::resource('alunos', 'AlunoController');
