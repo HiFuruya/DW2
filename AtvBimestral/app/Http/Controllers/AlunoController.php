@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Aluno;
 use App\Models\Curso;
+use App\Models\Disciplina;
+use App\Models\Matricula;
 use Illuminate\Http\Request;
 
 class AlunoController extends Controller
@@ -47,13 +49,6 @@ class AlunoController extends Controller
         $aluno->save();
 
         return redirect()->route('alunos.index');
-    }
-
-    public function show($id)
-    {
-        $dados = Aluno::with(['curso'])->find($id);
-
-        echo $dados->getAttribute('nome');
     }
 
     public function edit($id)
@@ -102,5 +97,16 @@ class AlunoController extends Controller
         $obj->destroy($id);
 
         return redirect()->route('alunos.index');
+    }
+
+    public function show($id)
+    {
+        $aluno = Aluno::find($id);
+
+        $disciplina = Disciplina::where('curso_id', $aluno->curso_id)->get();
+
+        $matriculas = Matricula::where('aluno_id', $id)->get();
+
+        return view('matriculas.matricula', compact('aluno', 'disciplina', 'matriculas'));
     }
 }

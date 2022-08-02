@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Curso;
 use App\Models\Disciplina;
+use App\Models\Matricula;
 use Illuminate\Http\Request;
 
 class DisciplinasController extends Controller
@@ -54,9 +55,9 @@ class DisciplinasController extends Controller
 
     public function show($id)
     {
-        $dados = Disciplina::find($id);
-        $cursos = Curso::all();
-        return view('disciplinas.show', compact('dados', 'cursos'));
+        $dados = Matricula::with(['aluno'])->where('disciplina_id', $id)->get();
+
+        return view('matriculas.listaAluno', compact('dados'));
     }
 
     public function edit($id)

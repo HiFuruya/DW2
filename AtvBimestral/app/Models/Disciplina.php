@@ -22,7 +22,7 @@ class Disciplina extends Model {
     }
 
     public function aluno(){
-        return $this->hasMany('App\Models\Aluno');
+        return $this->belongsToMany('App\Models\Aluno', 'matriculas');
     }
 
     public function vinculo(){
