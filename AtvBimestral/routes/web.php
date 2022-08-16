@@ -14,13 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('templates.main')->with('titulo', "");
-})->name('index');
+    return view('welcome');
+});
 
-Route::resource('cursos', 'CursoController');
-Route::resource('disciplinas', 'DisciplinasController');
-Route::resource('professores', 'ProfessoresController');
-Route::resource('eixos', 'EixoController');
-Route::resource('vinculos', 'VinculoController');
-Route::resource('alunos', 'AlunoController');
-Route::resource('matriculas', 'MatriculaController');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__.'/auth.php';
